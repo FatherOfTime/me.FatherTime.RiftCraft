@@ -1,0 +1,16 @@
+name: RiftCraft
+main: me.FatherTime.RiftCraft.RiftCraft
+description:  RiftCraft is a plug-in that allows players to inscribe a collection of locations into a Riftbook. Player can then rift to these locations at a later time. The system is resource based, helping to add to a servers economy.
+version: 1.0.1
+commands:
+  riftcraft:
+    aliases:
+        - rc
+    description: The root command for most RiftCraft commands.
+    usage: /<command>
+  rift:
+    description: A shortcut command for RiftCraft rifting.
+    usage: /<command>
+  riftto:
+    description: A shortcut command for RiftCraft to rifting to another players location.
+    usage: /<command>
