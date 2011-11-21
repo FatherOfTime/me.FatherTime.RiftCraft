@@ -10,7 +10,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-class RiftBook
+public class RiftBook
 {
 	public Map<String, Location> Inscriptions = new HashMap<String, Location>();
 	public Date LastUsed;
