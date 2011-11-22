@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 import java.awt.Desktop;
 
 import me.FatherTime.RiftCraft.RiftCraftP2PRequest.RCTravelType;
+import me.FatherTime.RiftCraft.tasks.RiftDelayer;
+import me.FatherTime.RiftCraft.tasks.RiftToDelayer;
 
 public class RiftCraft extends JavaPlugin
 {	
@@ -417,14 +419,15 @@ public class RiftCraft extends JavaPlugin
 	{
 		Player requester = Bukkit.getPlayer(requestername);
 		Player requested = Bukkit.getPlayer(requestedname);
-		final Location destination = requested.getLocation();
 		
 		final Inventory inv = requester.getInventory();
 		if( inv.contains(RiftCraft.RiftResourceID, RiftCraft.RiftConsumption))
 		{
 			requester.playEffect(requester.getLocation(), Effect.SMOKE, 0);
 			requester.sendMessage( ChatColor.YELLOW + requestedname + " has accepted, you begin opening a rift in space...");
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask( Bukkit.getPluginManager().getPlugin("RiftCraft"), new Runnable(){public void run() { FinishRiftTo( requestername, requestedname, inv, destination );} }, 20 * RiftCraft.RiftDelay );
+			//TODO Because everything is static, this workaround is initialized.
+			RiftToDelayer riftToDelayer = new RiftToDelayer((RiftCraft) Bukkit.getPluginManager().getPlugin("RiftCraft"), requester, requested, 20 * RiftCraft.RiftDelay);
+			riftToDelayer.scheduleMe();
 		}
 	}
 	
@@ -451,8 +454,8 @@ public class RiftCraft extends JavaPlugin
 			{
 				player.playEffect(player.getLocation(), Effect.SMOKE, 0);
 				player.sendMessage( ChatColor.YELLOW + "You begin opening a rift in space...");
-				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){public void run() { FinishRift( playername, book, inscription, inv );} }, 20 * RiftCraft.RiftDelay );
-				// TODO make it so if the player moves or gets hit during this pause that it cancels the rift				
+				RiftDelayer riftInitiate = new RiftDelayer(this, player, book, inscription, 20 * RiftCraft.RiftDelay);
+				riftInitiate.scheduleMe();
 			}
 			else
 			player.sendMessage( ChatColor.RED + "You do not have enough " + ChatColor.YELLOW + "glowstone dust " + ChatColor.RED + "to create a rift.");
